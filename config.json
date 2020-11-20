@@ -1,5 +1,5 @@
 {
-    "token": "NzcxNzU5MTQwOTMwMzIyNDQy.X5wytQ.5FEWwtPv6_zItsmEuE4V-VhmEAU",
-    "prefix": "-",
-    "version": "MamadisimoBOT v1.4.4"
+    "token": "secretToken",
+    "prefix": "prefix",
+    "version": "botVersion"
 }

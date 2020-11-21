@@ -63,7 +63,7 @@ client.on('message',  async (message) => {
     let answer = [
       "yes","no","idk", "obviously no","maybe"
     ];
-    var random = respuesta[Math.floor(Math.random() * respuesta.length)]
+    var random = answer[Math.floor(Math.random() * respuesta.length)]
     var question = args.join(" ")
     const embed = new Discord.MessageEmbed()
     .setColor(000000)

@@ -67,7 +67,7 @@ client.on('message',  async (message) => {
     var question = args.join(" ")
     const embed = new Discord.MessageEmbed()
     .setColor(000000)
-    .addField("*Mi answer:*", `${random}`)
+    .addField("*My answer:*", `${random}`)
     message.channel.send(embed)
 }
   

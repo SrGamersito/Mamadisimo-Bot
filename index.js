@@ -15,25 +15,30 @@ client.on('message',  async (message) => {
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   var version = config.version;
-
-  if(command === "poll"){
-    if(!message.content.startsWith(prefix)) return;
+   
+  if(command === "flipcoin"){
+    var flip = ["side","tails"]
+    var flipcoin = flip[Math.floor(Math.random() * flip.length)]
+    let embed = new Discord.MessageEmbed()
+    .setTitle("*Result:*")
+    .setDescription(`**${flipcoin}**`)
+    .setFooter(version, client.user.displayAvatarURL())
+    .setTimestamp()
+    message.channel.send(embed)
+  }
+   
+  if(command === "avatar"){
     if(message.author.bot) return;
-
-    let poll = args.slice(0).join(" ");
-    if(!poll) return message.channel.send("Write some text")
-    if(!message.member.hasPermission("ADD_REACTIONS")) return;
-
-    const poll = new Discord.MessageEmbed()
-    .setDescription("**" +poll+ "**")
-    message.delete().catch
-    message.channel.send(poll).then(sentEmbed => {
-      sentEmbed.react("👍")
-      sentEmbed.react("👎")
-  })
+    let mencionado = message.mentions.users.first()
+    if(!mencionado) return message.channel.send("Ping someone")
+    const embed = new Discord.MessageEmbed()
+    .setTitle("Avatar from: "+mencionado.username)
+    .setImage(mencionado.displayAvatarURL())
+    .setFooter(version, client.user.displayAvatarURL())
+    message.channel.send(embed)
   }
   
-  if(command === "rps"){
+  if(command === "ppt"){
     if(!message.content.startsWith(prefix)) return;
     if(message.author.bot) return;
     const options = [
@@ -70,21 +75,6 @@ client.on('message',  async (message) => {
     .addField("*My answer:*", `${random}`)
     message.channel.send(embed)
 }
-  
-  if(command === "clear"){
-    if(message.author.bot) return;
-    if(!message.content.startsWith(prefix)) return;
-    if(!message.member.permissions.has("MANAGE_MESSAGES")) return message.channel.send("You need permissions").then(message => message.delete({ timeout: 5000}))
-    if(!message.guild.me.hasPermission("MANAGE_MESSAGES")) return message.channel.send("I need permissions").then(message => message.delete({ timeout: 5000}))
-    if(!args[0]) return message.channel.send("Write how many messages you wanna delete").then(message => message.delete({ timeout: 5000}))
-    let number = args[0]
-    if(isNaN(number)) return message.channel.send("Write a number, not words or symbols").then(message => message.delete({ timeout: 5000}))
-    number = parseInt(number)
-    if(number >= 120 || number <= 0) return message.channel.send("Write a number up to 0 - Down to 120").then(message => message.delete({ timeout: 5000}))
-    message.channel.bulkDelete(number + 1 ).then( () =>{
-      message.channel.send(`I cleared **${number} mensajes**`).then(message => message.delete({ timeout: 5000}))
-    })
-  }
 
   if(command === "help"){
     if(message.author.bot) return;
@@ -98,24 +88,26 @@ client.on('message',  async (message) => {
     .setURL("https://github.com/SrGamersito")
     .addField("**Fun:**", "```say, 8ball, rps```")
     .addField("**Utility:**", "```poll```")
-    .addField("**Moderation:**", "```ban, kick, clear, broadcast```")
+    .addField("**Moderation:**", "```ban, kick, clear```")
     message.channel.send(embed)
   }
   
 ///////////////////////////////MODERATION///////////////////////////////
-
-  if(command === "broadcast"){
+   
+   if(command === "clear"){
     if(message.author.bot) return;
     if(!message.content.startsWith(prefix)) return;
-    if(!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send("You need more permissions to do that")
-    let broadcast = args.slice(0).join(" ")
-    if(!broadcast) return message.channel.send("Write something for me to send")
-    const bc = new Discord.MessageEmbed()
-    .setDescription(broadcast)
-    message.delete().catch
-    message.channel.send(bc)
+    if(!message.member.permissions.has("MANAGE_MESSAGES")) return message.channel.send("You need permissions").then(message => message.delete({ timeout: 5000}))
+    if(!message.guild.me.hasPermission("MANAGE_MESSAGES")) return message.channel.send("I need permissions").then(message => message.delete({ timeout: 5000}))
+    if(!args[0]) return message.channel.send("Write how many messages you wanna delete").then(message => message.delete({ timeout: 5000}))
+    let number = args[0]
+    if(isNaN(number)) return message.channel.send("Write a number, not words or symbols").then(message => message.delete({ timeout: 5000}))
+    number = parseInt(number)
+    if(number >= 120 || number <= 0) return message.channel.send("Write a number up to 0 - Down to 120").then(message => message.delete({ timeout: 5000}))
+    message.channel.bulkDelete(number + 1 ).then( () =>{
+      message.channel.send(`I cleared **${number} mensajes**`).then(message => message.delete({ timeout: 5000}))
+    })
   }
-
 
   if(command === "kick"){
     if(message.author.bot) return;

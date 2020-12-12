@@ -12,6 +12,8 @@ client.on('ready', () => {
 });
 
 client.on('message',  async (message) => {
+  if(message.author.bot) return;
+  if(!message.content.startsWith(prefix)) return;
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   var version = config.version;
@@ -28,7 +30,6 @@ client.on('message',  async (message) => {
   }
    
   if(command === "avatar"){
-    if(message.author.bot) return;
     let mencionado = message.mentions.users.first()
     if(!mencionado) return message.channel.send("Ping someone")
     const embed = new Discord.MessageEmbed()
@@ -39,8 +40,6 @@ client.on('message',  async (message) => {
   }
   
   if(command === "ppt"){
-    if(!message.content.startsWith(prefix)) return;
-    if(message.author.bot) return;
     const options = [
         "Rock :shell: ",
         "Paper :newspaper2:",
@@ -52,9 +51,7 @@ client.on('message',  async (message) => {
 }
 
   if(command === "say"){
-    if(!message.content.startsWith(prefix)) return;
     let text = args.join(" ");
-    if(message.author.bot) return;
     if(!text) return message.channel.send(`Send some text to say`).then(message => message.delete({ timeout: 5000}))
     message.delete().catch
     message.channel.send(text);
@@ -62,8 +59,6 @@ client.on('message',  async (message) => {
   }
 
   if(command === "8ball"){
-    if(message.author.bot) return;
-    if(!message.content.startsWith(prefix)) return;
     if(!args[0]) return message.channel.send("Make me a question")
     let answer = [
       "yes","no","idk", "obviously no","maybe"
@@ -77,8 +72,6 @@ client.on('message',  async (message) => {
 }
 
   if(command === "help"){
-    if(message.author.bot) return;
-    if(!message.content.startsWith(prefix)) return;
     const embed = new Discord.MessageEmbed()
     .setTitle("Help commands:")
     .setColor(0x00AE86)
@@ -95,8 +88,6 @@ client.on('message',  async (message) => {
 ///////////////////////////////MODERATION///////////////////////////////
    
    if(command === "clear"){
-    if(message.author.bot) return;
-    if(!message.content.startsWith(prefix)) return;
     if(!message.member.permissions.has("MANAGE_MESSAGES")) return message.channel.send("You need permissions").then(message => message.delete({ timeout: 5000}))
     if(!message.guild.me.hasPermission("MANAGE_MESSAGES")) return message.channel.send("I need permissions").then(message => message.delete({ timeout: 5000}))
     if(!args[0]) return message.channel.send("Write how many messages you wanna delete").then(message => message.delete({ timeout: 5000}))
@@ -110,8 +101,6 @@ client.on('message',  async (message) => {
   }
 
   if(command === "kick"){
-    if(message.author.bot) return;
-    if(!message.content.startsWith(prefix)) return;
     let kicked = message.mentions.users.first();
     if(kicked.id === client.user.id) return message.channel.send("Don't ping me")
 
@@ -142,8 +131,6 @@ client.on('message',  async (message) => {
   }
 
   if(command === "ban"){
-    if(message.author.bot) return;
-    if(!message.content.startsWith(prefix)) return;
 
     let banned = message.mentions.users.first();
     if(banned.id === client.user.id) return message.channel.send("Don't ping me")
